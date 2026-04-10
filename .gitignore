@@ -1,0 +1,18 @@
+# Ignore model files
+pt_model/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+summarizer/
+venv/
+.env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
