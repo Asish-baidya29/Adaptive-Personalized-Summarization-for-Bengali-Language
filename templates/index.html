@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adaptive Multilingual Summarizer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+
+    <!-- ── Header ─────────────────────────────────────────────── -->
+    <div class="header">
+      <h1>Adaptive Multilingual Summarizer</h1>
+      <p>Personalized English summarization with Bengali output</p>
+    </div>
+
+    <!-- ── Error Banner ───────────────────────────────────────── -->
+    <div class="error-banner" id="errorBanner"></div>
+
+    <!-- ── Input Card ─────────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-title">Input Text</div>
+      <div class="form-group">
+        <label for="inputText">Paste your English text</label>
+        <textarea id="inputText" placeholder="Paste a research paper, news article, story, or any English text here..."></textarea>
+      </div>
+    </div>
+
+    <!-- ── User Profile Card ──────────────────────────────────── -->
+    <div class="card">
+      <div class="card-title">
+        Your Profile
+        <span class="badge">Personalizes the summary for you</span>
+      </div>
+      <div class="profile-grid">
+        <div class="form-group">
+          <label for="knowledgeLevel">Your knowledge level</label>
+          <select id="knowledgeLevel">
+            <option value="general">General reader</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="expert">Expert</option>
+            <option value="student">Student</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="summaryStyle">Summary style</label>
+          <select id="summaryStyle">
+            <option value="concise">Concise</option>
+            <option value="detailed">Detailed</option>
+            <option value="bullet_points">Bullet points</option>
+            <option value="narrative">Narrative</option>
+            <option value="technical">Technical</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="summaryLength">Summary length</label>
+          <select id="summaryLength">
+            <option value="medium">Medium</option>
+            <option value="short">Short</option>
+            <option value="long">Long</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="domain">Domain (optional)</label>
+          <input type="text" id="domain" placeholder="e.g. science, law, technology">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="runPipeline()">Summarize &amp; Translate</button>
+    </div>
+
+    <!-- ── Loader ─────────────────────────────────────────────── -->
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <p>Running the pipeline... this may take a minute.</p>
+    </div>
+
+    <!-- ── Results Card ───────────────────────────────────────── -->
+    <div class="card results-section" id="results">
+      <div class="card-title">
+        Results
+        <span class="timing-tag" id="timingTag"></span>
+      </div>
+
+      <!-- Doc metadata -->
+      <div class="meta-bar" id="metaBar"></div>
+
+      <!-- Step 1: Initial summary -->
+      <div class="result-step step-initial">
+        <h3>Initial Summary (first pass)</h3>
+        <div class="result-text" id="initialSummary"></div>
+      </div>
+
+      <!-- Step 2: Critique -->
+      <div class="result-step step-critique">
+        <h3>Critic Agent Feedback</h3>
+        <div class="result-text" id="critique"></div>
+      </div>
+
+      <!-- Step 3: Refined summary -->
+      <div class="result-step step-refined">
+        <h3>Refined Summary (second pass)</h3>
+        <div class="result-text" id="refinedSummary"></div>
+      </div>
+
+      <!-- Step 4: Bengali output -->
+      <div class="result-step step-bengali">
+        <h3>Bengali Output (আপনার ভাষায়)</h3>
+        <div class="result-text bengali-text" id="bengaliOutput"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="card" style="background:#f9f9f6; margin-top:20px;">
+        <div class="card-title">Rate this summary</div>
+        <div class="feedback-row">
+          <button class="star-btn" data-rating="1" onclick="selectRating(1)">★</button>
+          <button class="star-btn" data-rating="2" onclick="selectRating(2)">★</button>
+          <button class="star-btn" data-rating="3" onclick="selectRating(3)">★</button>
+          <button class="star-btn" data-rating="4" onclick="selectRating(4)">★</button>
+          <button class="star-btn" data-rating="5" onclick="selectRating(5)">★</button>
+          <input type="text" id="feedbackComment" placeholder="Optional comment..." style="flex:1; min-width:140px;">
+          <button class="btn btn-secondary" onclick="submitFeedback()">Submit</button>
+        </div>
+        <div id="feedbackMsg" style="font-size:0.85rem; color: #2f9e44; margin-top:8px;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
